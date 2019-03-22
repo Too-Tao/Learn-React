@@ -8,13 +8,17 @@ const CommentListStyle = styled.div `
 `
 
 export default class CommentList extends Component {
-  
+  static defaultProps = {
+    comments: []
+  }
   render() {
     return (
       <CommentListStyle>
-        <Comment/><Comment/>
-        <Comment/>
-        <Comment/>
+          { this.props.comments.map( (comment, i) => {
+            return (
+              <Comment key={i} comment={comment}/>
+            )
+          } )}
       </CommentListStyle>
     )
   }

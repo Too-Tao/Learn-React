@@ -11,12 +11,25 @@ const CommentAppStyle = styled.div `
 `
 
 class CommentApp extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      comments: []
+    }
+  }
+  handleSubmitComment = (comment) => {
+    this.state.comments.push(comment)
+    this.setState({
+      comments: this.state.comments
+    })
+  }
+  
   render() {
     
     return (
       <CommentAppStyle>
-        <CommentInput/>
-        <CommentList/>
+        <CommentInput onSubmit={this.handleSubmitComment}/>
+        <CommentList comments={this.state.comments}/>
       </CommentAppStyle>
         
     )

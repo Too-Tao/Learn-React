@@ -19,10 +19,9 @@ const YourComment = styled.span `
 `
 
 export default class CommentInput extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      inputValue: '',
       userName: '',
       comment: ''
     }
@@ -35,18 +34,24 @@ export default class CommentInput extends Component {
     let value = e.target.value
     // 将输入内容保存到state中
     this.setState({
-      inputValue: value
+      userName: value
     })
   }
-  handleBlur = () => {
-    // console.log(this.state.inputValue)
-    let name = this.state.inputValue
+
+  handleComment = (e) => {
     this.setState({
-      userName: name
+      comment: e.target.value
     })
-    console.log(name)
-    console.log(this.state)
   }
+
+  handleSubmit = () => {
+    if (this.props.onSubmit) {
+      const { userName, comment } = this.state
+      this.props.onSubmit({userName, comment})
+    }
+    this.setState({ comment: '' })
+  }
+  
   render() {
     const { TextArea } = Input
     const btnStyle = {
@@ -58,15 +63,20 @@ export default class CommentInput extends Component {
         <UserName>用户名:</UserName>
         <Input 
           onChange={this.handleInputValue}
-          onBlur={this.handleBlur}
           value={this.state.userName}
         />
         <YourComment>输入你的评论</YourComment>
-        <TextArea rows={11}/>
+        <TextArea 
+          rows={11}
+          onChange={this.handleComment}
+          value={this.state.comment}
+        />
         <Button
           type="primary"
           style={btnStyle}
-        >提交</Button>
+          onClick={this.handleSubmit}
+        >
+        提交</Button>
       </CommentInputStyle>
     )
   }
