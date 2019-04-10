@@ -1,2 +1,5 @@
 # Redux
-## 2019/4/1-2019/4/15 Redux学习安排
+## Action
+## Reducer
+## Store
+# react-redux
