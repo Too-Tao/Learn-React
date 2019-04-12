@@ -1,11 +1,22 @@
-import { connect } from 'dva';
-import { Table, Pagination, Popconfirm } from 'antd';
-import styles from './Users.css';
-import { PAGE_SIZE } from '../constants';
+import { connect } from 'dva'
+import { Table, Pagination, Popconfirm } from 'antd'
+import styles from './Users.css'
+import { PAGE_SIZE } from '../constants'
+import { routerRedux } from 'dva/router'
 
-function Users({ list: dataSource, total, page: current }) {
+function Users({ dispatch, list: dataSource, loading, total, page: current }) {
   function deleteHandler(id) {
-    console.warn(`TODO: ${id}`);
+    dispatch({
+      type: 'users/remove',
+      payload: id
+    })
+  }
+
+  function pageChangeHandler(page) {
+    dispatch(routerRedux.push({
+      pathname: '/users',
+      query: { page },
+    }))
   }
 
   const columns = [
@@ -43,6 +54,7 @@ function Users({ list: dataSource, total, page: current }) {
     <div className={styles.normal}>
       <div>
         <Table
+          loading={loading}
           columns={columns}
           dataSource={dataSource}
           rowKey={record => record.id}
@@ -53,6 +65,7 @@ function Users({ list: dataSource, total, page: current }) {
           total={total}
           current={current}
           pageSize={PAGE_SIZE}
+          onChange={pageChangeHandler}
         />
       </div>
     </div>
@@ -65,6 +78,7 @@ function mapStateToProps(state) {
     list,
     total,
     page,
+    loading: state.loading.models.users
   };
 }
 
